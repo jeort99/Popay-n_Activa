@@ -1,0 +1,56 @@
+{% extends "denuncias/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Denuncias registradas</h1>
+        <p class="text-muted">Revisa el historial reciente y el estado actual de cada denuncia.</p>
+    </div>
+    <div>
+        <a href="/denuncias/nueva/" class="btn btn-primary">Registrar denuncia</a>
+        <span class="badge bg-primary py-2 px-3 ms-2">Total: {{ denuncias|length }}</span>
+    </div>
+</div>
+
+{% if denuncias %}
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-hover align-middle mb-0">
+        <thead class="table-dark">
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for denuncia in denuncias %}
+            <tr>
+                <td class="fw-semibold">{{ denuncia.titulo }}</td>
+                <td>{{ denuncia.descripcion|truncatechars:90 }}</td>
+                <td>
+                    {% if denuncia.estado == "Pendiente" %}
+                        <span class="badge bg-warning text-dark status-badge">Pendiente</span>
+                    {% elif denuncia.estado == "Resuelta" %}
+                        <span class="badge bg-success status-badge">Resuelta</span>
+                    {% else %}
+                        <span class="badge bg-secondary status-badge">{{ denuncia.estado }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ denuncia.fecha_registro|date:"d M Y" }}</td>
+                <td class="d-flex gap-2">
+                    <a href="{% url 'detalle_denuncia' denuncia.id %}" class="btn btn-sm btn-outline-secondary">Ver detalle</a>
+                    <a href="{% url 'editar_estado' denuncia.id %}" class="btn btn-sm btn-outline-primary">Editar estado</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info rounded shadow-sm" role="alert">
+    Aún no hay denuncias registradas. Pulsa <a href="/denuncias/nueva/" class="alert-link">registrar denuncia</a> para empezar.
+</div>
+{% endif %}
+{% endblock %}

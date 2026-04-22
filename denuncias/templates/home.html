@@ -1,0 +1,51 @@
+{% extends "denuncias/base.html" %}
+
+{% block content %}
+<section class="hero p-5 mb-5">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <h1 class="display-5 fw-bold">Popayán Activa</h1>
+            <p class="lead">Una plataforma intuitiva para reportar y gestionar denuncias ciudadanas con transparencia y rapidez.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-start">
+                <a href="/denuncias/nueva/" class="btn btn-light btn-lg px-4">Registrar denuncia</a>
+                <a href="/denuncias/" class="btn btn-outline-light btn-lg px-4">Ver denuncias</a>
+            </div>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+            <div class="card bg-white text-dark card-custom p-4">
+                <div class="card-body">
+                    <h5 class="card-title">Tu voz, tu ciudad</h5>
+                    <p class="card-text">Reporta con facilidad, conoce el estado de tu denuncia y ayuda a mejorar la seguridad y convivencia.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="beneficios" class="row g-4">
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Rápido</h5>
+                <p class="card-text">Registra denuncias en pocos pasos desde cualquier dispositivo.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Seguro</h5>
+                <p class="card-text">Información protegida y procesos de seguimiento confiables.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Transparente</h5>
+                <p class="card-text">Visualiza el avance de las denuncias y recupera la confianza ciudadana.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
