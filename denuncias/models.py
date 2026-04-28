@@ -20,6 +20,9 @@ class Categoria(models.Model):
     nombre = models.CharField(db_column='Nombre', max_length=100)
     descripcion = models.CharField(db_column='Descripcion', max_length=255, null=True, blank=True)
 
+    def __str__(self):
+        return self.nombre  # CLAVE
+
     class Meta:
         db_table = 'Categorias'
         managed = False
