@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-nijkf1z1!fb$4bvqd4&w#73#hac7y4htbk!5=til3kxs%d*y%+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -76,6 +76,14 @@ WSGI_APPLICATION = 'popayanactiva.wsgi.application'
 
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+""" 
+DATABASES = {
+    'default': {
         'ENGINE': 'mssql',
         'NAME': 'PopayanActiva',
         'USER': '',
@@ -89,7 +97,7 @@ DATABASES = {
         },
     }
 }
-
+"""
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

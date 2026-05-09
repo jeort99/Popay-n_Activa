@@ -12,7 +12,7 @@ class Usuario(models.Model):
 
     class Meta:
         db_table = 'Usuarios'
-        managed = False
+        managed = True
 
 
 class Categoria(models.Model):
@@ -25,7 +25,7 @@ class Categoria(models.Model):
 
     class Meta:
         db_table = 'Categorias'
-        managed = False
+        managed = True
 
 
 class Denuncia(models.Model):
@@ -39,7 +39,7 @@ class Denuncia(models.Model):
 
     class Meta:
         db_table = 'Denuncias'
-        managed = False
+        managed = True
 
 
 class Geolocalizacion(models.Model):
@@ -51,7 +51,7 @@ class Geolocalizacion(models.Model):
 
     class Meta:
         db_table = 'Geolocalizacion'
-        managed = False
+        managed = True
 
 
 class Seguimiento(models.Model):
@@ -64,7 +64,7 @@ class Seguimiento(models.Model):
 
     class Meta:
         db_table = 'Seguimiento'
-        managed = False
+        managed = True
 
 
 class ClasificacionIA(models.Model):
@@ -76,4 +76,4 @@ class ClasificacionIA(models.Model):
 
     class Meta:
         db_table = 'ClasificacionIA'
-        managed = False
+        managed = True

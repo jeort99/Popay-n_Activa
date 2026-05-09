@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entorno virtual
+venv/
+env/
+.venv/
+
+# Variables de entorno
+.env
+
+# Django
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Logs
+*.log
+
+# Archivos de migración compilados
+*/migrations/__pycache__/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Docker
+*.pid
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Coverage / testing
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Node
+node_modules/
+
+# Build
+dist/
+build/
+
+# Archivos temporales
+*.tmp
+*.temp
+
+# Docker override local
+docker-compose.override.yml

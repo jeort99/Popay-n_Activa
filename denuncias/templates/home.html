@@ -1,51 +1,275 @@
 {% extends "denuncias/base.html" %}
 
 {% block content %}
-<section class="hero p-5 mb-5">
+
+<!-- HERO -->
+<section class="bg-success bg-gradient text-white rounded-4 p-5 mb-5 shadow">
+
     <div class="row align-items-center">
+
         <div class="col-lg-7">
-            <h1 class="display-5 fw-bold">Popayán Activa</h1>
-            <p class="lead">Una plataforma intuitiva para reportar y gestionar denuncias ciudadanas con transparencia y rapidez.</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-start">
-                <a href="/denuncias/nueva/" class="btn btn-light btn-lg px-4">Registrar denuncia</a>
-                <a href="/denuncias/" class="btn btn-outline-light btn-lg px-4">Ver denuncias</a>
+
+            <h1 class="display-4 fw-bold mb-4">
+                Tu voz importa en Popayán
+            </h1>
+
+            <p class="lead mb-4">
+                Reporta problemáticas urbanas, sigue su progreso
+                y contribuye a construir una mejor ciudad.
+            </p>
+
+            <div class="d-flex gap-3 flex-wrap">
+
+                <a href="/denuncias/nueva/"
+                   class="btn btn-light btn-lg px-4">
+
+                    <i class="bi bi-file-earmark-text"></i>
+                    Reportar Denuncia
+
+                </a>
+
+                <a href="/denuncias/"
+                   class="btn btn-outline-light btn-lg px-4">
+
+                    <i class="bi bi-map"></i>
+                    Ver Denuncias
+
+                </a>
+
             </div>
+
         </div>
-        <div class="col-lg-5 text-center mt-4 mt-lg-0">
-            <div class="card bg-white text-dark card-custom p-4">
-                <div class="card-body">
-                    <h5 class="card-title">Tu voz, tu ciudad</h5>
-                    <p class="card-text">Reporta con facilidad, conoce el estado de tu denuncia y ayuda a mejorar la seguridad y convivencia.</p>
+
+        <!-- ESTADÍSTICAS -->
+
+        <div class="col-lg-5 mt-5 mt-lg-0">
+
+            <div class="card border-0 shadow-lg rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        Estadísticas en Tiempo Real
+                    </h4>
+
+                    <div class="row g-3">
+
+                        <div class="col-6">
+                            <div class="bg-light rounded p-3 text-center">
+                                <h2 class="fw-bold">
+                                    {{ stats.total }}
+                                </h2>
+
+                                <small>Total</small>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="bg-warning bg-opacity-25 rounded p-3 text-center">
+                                <h2 class="fw-bold">
+                                    {{ stats.pendientes }}
+                                </h2>
+
+                                <small>Pendientes</small>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="bg-primary bg-opacity-25 rounded p-3 text-center">
+                                <h2 class="fw-bold">
+                                    {{ stats.proceso }}
+                                </h2>
+
+                                <small>En Proceso</small>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="bg-success bg-opacity-25 rounded p-3 text-center">
+                                <h2 class="fw-bold">
+                                    {{ stats.resueltas }}
+                                </h2>
+
+                                <small>Resueltas</small>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
 
-<section id="beneficios" class="row g-4">
-    <div class="col-md-4">
-        <div class="card card-custom p-4 h-100">
-            <div class="card-body">
-                <h5 class="card-title">Rápido</h5>
-                <p class="card-text">Registra denuncias en pocos pasos desde cualquier dispositivo.</p>
-            </div>
-        </div>
+<!-- FEATURES -->
+
+<section class="mb-5">
+
+    <div class="text-center mb-5">
+
+        <h2 class="fw-bold">
+            ¿Cómo funciona?
+        </h2>
+
+        <p class="text-muted">
+            Una plataforma moderna para denuncias ciudadanas
+        </p>
+
     </div>
-    <div class="col-md-4">
-        <div class="card card-custom p-4 h-100">
-            <div class="card-body">
-                <h5 class="card-title">Seguro</h5>
-                <p class="card-text">Información protegida y procesos de seguimiento confiables.</p>
+
+    <div class="row g-4">
+
+        {% for feature in features %}
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card h-100 border-0 shadow-sm rounded-4">
+
+                <div class="card-body p-4 text-center">
+
+                    <div class="bg-success bg-opacity-10
+                                d-inline-flex
+                                align-items-center
+                                justify-content-center
+                                rounded-circle
+                                mb-4"
+                         style="width:70px;height:70px;">
+
+                        <i class="bi {{ feature.icon }}
+                                  text-success
+                                  fs-2">
+                        </i>
+
+                    </div>
+
+                    <h5 class="fw-bold mb-3">
+                        {{ feature.title }}
+                    </h5>
+
+                    <p class="text-muted">
+                        {{ feature.description }}
+                    </p>
+
+                </div>
+
             </div>
+
         </div>
+
+        {% endfor %}
+
     </div>
-    <div class="col-md-4">
-        <div class="card card-custom p-4 h-100">
-            <div class="card-body">
-                <h5 class="card-title">Transparente</h5>
-                <p class="card-text">Visualiza el avance de las denuncias y recupera la confianza ciudadana.</p>
-            </div>
-        </div>
-    </div>
+
 </section>
+
+<!-- CATEGORÍAS -->
+
+<section class="bg-light rounded-4 p-5 mb-5">
+
+    <div class="row align-items-center">
+
+        <div class="col-lg-6">
+
+            <h2 class="fw-bold mb-4">
+                Categorías de Denuncias
+            </h2>
+
+            <p class="text-muted mb-4">
+                Reporta cualquier problemática urbana
+            </p>
+
+            <div class="row g-3">
+
+                {% for categoria in categorias %}
+
+                <div class="col-6">
+
+                    <div class="bg-white border rounded p-3 text-center fw-semibold shadow-sm">
+
+                        {{ categoria }}
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+        <!-- BENEFICIOS -->
+
+        <div class="col-lg-6 mt-5 mt-lg-0">
+
+            <div class="card border-0 shadow rounded-4">
+
+                <div class="card-body p-4">
+
+                    <h4 class="fw-bold mb-4">
+                        ¿Por qué usar Popayán Activa?
+                    </h4>
+
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            Respuesta rápida y eficiente
+                        </li>
+
+                        <li class="list-group-item">
+                            Transparencia total
+                        </li>
+
+                        <li class="list-group-item">
+                            Participación ciudadana
+                        </li>
+
+                        <li class="list-group-item">
+                            Tecnología de geolocalización
+                        </li>
+
+                        <li class="list-group-item">
+                            Seguimiento detallado
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="bg-success text-white rounded-4 p-5 text-center shadow">
+
+    <i class="bi bi-people-fill display-3 mb-4"></i>
+
+    <h2 class="fw-bold mb-4">
+        Construyamos juntos una mejor ciudad
+    </h2>
+
+    <p class="lead mb-4">
+        Cada denuncia ayuda a mejorar Popayán.
+    </p>
+
+    <a href="/denuncias/nueva/"
+       class="btn btn-light btn-lg px-5">
+
+        Hacer mi primer reporte
+
+    </a>
+
+</section>
+
 {% endblock %}
