@@ -3,12 +3,12 @@ from .models import Denuncia
 from .forms import DenunciaForm
 
 def home(request):
-
+    
     stats = {
-        "total": 0,
-        "pendientes": 0,
-        "proceso": 0,
-        "resueltas": 0,
+        "total": Denuncia.objects.count(),
+        "pendientes": Denuncia.objects.filter(estado="Pendiente").count(),
+        "proceso": Denuncia.objects.filter(estado="En proceso").count(),
+        "resueltas": Denuncia.objects.filter(estado="Resuelta").count(),
     }
 
     features = [
@@ -53,60 +53,6 @@ def home(request):
         },
     )
 
-""" 
-def home(request):
-
-    denuncias = Denuncia.objects.all()
-
-    stats = {
-        "total": denuncias.count(),
-        "pendientes": denuncias.filter(estado__iexact="Pendiente").count(),
-        "proceso": denuncias.filter(estado__iexact="En Proceso").count(),
-        "resueltas": denuncias.filter(estado__iexact="Resuelta").count(),
-    }
-
-    features = [
-        {
-            "icon": "bi-geo-alt-fill",
-            "title": "Geolocalización Precisa",
-            "description": "Ubica tu denuncia en el mapa exacto donde ocurre la problemática.",
-        },
-        {
-            "icon": "bi-cpu-fill",
-            "title": "Clasificación Inteligente",
-            "description": "Nuestro sistema clasifica automáticamente los reportes.",
-        },
-        {
-            "icon": "bi-clock-history",
-            "title": "Seguimiento en Tiempo Real",
-            "description": "Consulta el estado de tus denuncias en cualquier momento.",
-        },
-        {
-            "icon": "bi-shield-check",
-            "title": "Transparencia Total",
-            "description": "Visualiza todas las denuncias y su gestión.",
-        },
-    ]
-
-    categorias = [
-        "Infraestructura",
-        "Servicios Públicos",
-        "Seguridad",
-        "Medio Ambiente",
-        "Transporte",
-        "Salud",
-    ]
-
-    return render(
-        request,
-        "home.html",
-        {
-            "stats": stats,
-            "features": features,
-            "categorias": categorias,
-        },
-    )
-"""
 
 def lista_denuncias(request):
     denuncias = Denuncia.objects.all()
