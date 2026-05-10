@@ -30,4 +30,5 @@ RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 # Comando producción
-CMD ["gunicorn", "popayanactiva.wsgi:application", "--bind", "0.0.0.0:8000"]
+# CMD ["gunicorn", "popayanactiva.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn popayanactiva.wsgi:application --bind 0.0.0.0:8000
