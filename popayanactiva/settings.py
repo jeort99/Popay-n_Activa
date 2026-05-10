@@ -17,7 +17,7 @@ ALLOWED_HOSTS = ["*"]
 # APPS
 # ==========================================
 INSTALLED_APPS = [
-    # 'jazzmin',  # desactivado temporalmente
+    'jazzmin',  # desactivado temporalmente
 
     'django.contrib.admin',
     'django.contrib.auth',
