@@ -11,20 +11,23 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get clean
 
 # Copiar requirements
 COPY requirements.txt .
 
 # Instalar dependencias Python
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar proyecto
 COPY . .
 
-# Puerto Django
+# Recolectar archivos estáticos
+RUN python manage.py collectstatic --noinput
+
+# Exponer puerto
 EXPOSE 8000
 
-# Comando inicial
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Comando producción
+CMD ["gunicorn", "popayanactiva.wsgi:application", "--bind", "0.0.0.0:8000"]
