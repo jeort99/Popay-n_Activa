@@ -2,7 +2,58 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Denuncia
 from .forms import DenunciaForm
 
+def home(request):
 
+    stats = {
+        "total": 0,
+        "pendientes": 0,
+        "proceso": 0,
+        "resueltas": 0,
+    }
+
+    features = [
+        {
+            "icon": "bi-geo-alt-fill",
+            "title": "Geolocalización Precisa",
+            "description": "Ubica tu denuncia en el mapa exacto donde ocurre la problemática.",
+        },
+        {
+            "icon": "bi-cpu-fill",
+            "title": "Clasificación Inteligente",
+            "description": "Nuestro sistema clasifica automáticamente los reportes.",
+        },
+        {
+            "icon": "bi-clock-history",
+            "title": "Seguimiento en Tiempo Real",
+            "description": "Consulta el estado de tus denuncias en cualquier momento.",
+        },
+        {
+            "icon": "bi-shield-check",
+            "title": "Transparencia Total",
+            "description": "Visualiza todas las denuncias y su gestión.",
+        },
+    ]
+
+    categorias = [
+        "Infraestructura",
+        "Servicios Públicos",
+        "Seguridad",
+        "Medio Ambiente",
+        "Transporte",
+        "Salud",
+    ]
+
+    return render(
+        request,
+        "home.html",
+        {
+            "stats": stats,
+            "features": features,
+            "categorias": categorias,
+        },
+    )
+
+""" 
 def home(request):
 
     denuncias = Denuncia.objects.all()
@@ -55,7 +106,7 @@ def home(request):
             "categorias": categorias,
         },
     )
-
+"""
 
 def lista_denuncias(request):
     denuncias = Denuncia.objects.all()
