@@ -9,16 +9,16 @@ SECRET_KEY = os.environ.get(
     "django-insecure-cambiar-en-produccion"
 )
 
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+DEBUG = os.environ.get("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = [
-    ".onrender.com",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["*"]
 
+# ==========================================
+# APPS
+# ==========================================
 INSTALLED_APPS = [
-    'jazzmin',  # si da error, prueba comentarlo
+    # 'jazzmin',  # desactivado temporalmente
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,9 +29,13 @@ INSTALLED_APPS = [
     'denuncias',
 ]
 
+# ==========================================
+# MIDDLEWARE
+# ==========================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,15 +46,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'popayanactiva.urls'
 
+# ==========================================
+# TEMPLATES
+# ==========================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"],  # agrega carpeta templates si la usas
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',  # útil en debug
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -65,7 +73,7 @@ WSGI_APPLICATION = 'popayanactiva.wsgi.application'
 # ==========================================
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
         conn_max_age=600
     )
 }
@@ -74,17 +82,27 @@ DATABASES = {
 # VALIDADORES
 # ==========================================
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'
+    },
 ]
 
 # ==========================================
 # INTERNACIONALIZACIÓN
 # ==========================================
 LANGUAGE_CODE = 'es-co'
+
 TIME_ZONE = 'America/Bogota'
+
 USE_I18N = True
 USE_TZ = True
 
@@ -92,7 +110,13 @@ USE_TZ = True
 # ARCHIVOS ESTÁTICOS
 # ==========================================
 STATIC_URL = '/static/'
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ==========================================
@@ -106,21 +130,30 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # ==========================================
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",
-    "http://127.0.0.1:8000",
-    "http://localhost:8000"
 ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # ==========================================
 # DEFAULT AUTO FIELD
 # ==========================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ==========================================
+# STORAGES
+# ==========================================
 STORAGES = {
-    "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-    "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage"
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    },
 }
 
+# ==========================================
+# ADMIN
+# ==========================================
 ADMIN_SITE_HEADER = "Popayán Activa"
 ADMIN_SITE_TITLE = "Panel de Administración"
 ADMIN_INDEX_TITLE = "Gestión de Denuncias Ciudadanas"
