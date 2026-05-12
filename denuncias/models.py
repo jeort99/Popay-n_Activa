@@ -1,6 +1,17 @@
 from django.db import models
 
 
+ESTADO_PENDIENTE = "Pendiente"
+ESTADO_EN_PROCESO = "En Proceso"
+ESTADO_RESUELTA = "Resuelta"
+
+ESTADOS_DENUNCIA = [
+    (ESTADO_PENDIENTE, "Pendiente"),
+    (ESTADO_EN_PROCESO, "En Proceso"),
+    (ESTADO_RESUELTA, "Resuelta"),
+]
+
+
 class Usuario(models.Model):
     id = models.AutoField(db_column='UsuarioID', primary_key=True)
     nombre = models.CharField(db_column='Nombre', max_length=100)
@@ -9,6 +20,9 @@ class Usuario(models.Model):
     password_hash = models.CharField(db_column='PasswordHash', max_length=255)
     rol = models.CharField(db_column='Rol', max_length=50)
     fecha_registro = models.DateTimeField(db_column='FechaRegistro', auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.nombre} {self.apellido} ({self.email})"
 
     class Meta:
         db_table = 'Usuarios'
@@ -34,8 +48,16 @@ class Denuncia(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, db_column='CategoriaID')
     titulo = models.CharField(db_column='Titulo', max_length=200)
     descripcion = models.TextField(db_column='Descripcion')
-    estado = models.CharField(db_column='Estado', max_length=50, default='Pendiente')
+    estado = models.CharField(
+        db_column='Estado',
+        max_length=50,
+        choices=ESTADOS_DENUNCIA,
+        default=ESTADO_PENDIENTE,
+    )
     fecha_registro = models.DateTimeField(db_column='FechaRegistro', auto_now_add=True)
+
+    def __str__(self):
+        return self.titulo
 
     class Meta:
         db_table = 'Denuncias'
@@ -49,6 +71,9 @@ class Geolocalizacion(models.Model):
     longitud = models.DecimalField(db_column='Longitud', max_digits=9, decimal_places=6)
     direccion = models.CharField(db_column='Direccion', max_length=255)
 
+    def __str__(self):
+        return f"{self.denuncia} - {self.direccion}"
+
     class Meta:
         db_table = 'Geolocalizacion'
         managed = True
@@ -59,8 +84,11 @@ class Seguimiento(models.Model):
     denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE, db_column='DenunciaID')
     funcionario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column='FuncionarioID')
     comentario = models.CharField(db_column='Comentario', max_length=500)
-    estado = models.CharField(db_column='Estado', max_length=50)
+    estado = models.CharField(db_column='Estado', max_length=50, choices=ESTADOS_DENUNCIA)
     fecha = models.DateTimeField(db_column='Fecha', auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.denuncia} - {self.estado}"
 
     class Meta:
         db_table = 'Seguimiento'

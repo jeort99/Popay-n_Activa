@@ -3,6 +3,9 @@ from pathlib import Path
 from django.test import SimpleTestCase
 from django.urls import NoReverseMatch, reverse
 
+from .admin import DenunciaAdmin, GeolocalizacionInline, SeguimientoInline
+from .models import Denuncia, ESTADOS_DENUNCIA, Seguimiento
+
 
 class DenunciaEstadoPublicoTests(SimpleTestCase):
     templates_dir = Path(__file__).resolve().parent / "templates"
@@ -55,3 +58,17 @@ class AutenticacionCiudadanaTests(SimpleTestCase):
         self.assertIn("form.longitud", template)
         self.assertIn("geo-button", template)
         self.assertIn("navigator.geolocation", template)
+
+
+class AdministradorTests(SimpleTestCase):
+    def test_estados_estan_controlados_en_modelos_principales(self):
+        self.assertEqual(Denuncia._meta.get_field("estado").choices, ESTADOS_DENUNCIA)
+        self.assertEqual(Seguimiento._meta.get_field("estado").choices, ESTADOS_DENUNCIA)
+
+    def test_denuncia_admin_tiene_flujo_de_gestion(self):
+        self.assertIn("marcar_pendiente", DenunciaAdmin.actions)
+        self.assertIn("marcar_en_proceso", DenunciaAdmin.actions)
+        self.assertIn("marcar_resuelta", DenunciaAdmin.actions)
+        self.assertIn(GeolocalizacionInline, DenunciaAdmin.inlines)
+        self.assertIn(SeguimientoInline, DenunciaAdmin.inlines)
+        self.assertIn("enlace_mapa", DenunciaAdmin.readonly_fields)
