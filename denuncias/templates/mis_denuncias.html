@@ -59,7 +59,6 @@
                         <td>{{ denuncia.fecha_registro|date:"d M Y" }}</td>
                         <td class="d-flex gap-2">
                             <a href="{% url 'detalle_denuncia' denuncia.id %}" class="btn btn-sm btn-outline-secondary">Ver detalle</a>
-                            <a href="{% url 'editar_estado' denuncia.id %}" class="btn btn-sm btn-outline-primary">Editar estado</a>
                         </td>
                     </tr>
                     {% endfor %}

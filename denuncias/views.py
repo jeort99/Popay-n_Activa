@@ -110,39 +110,6 @@ def registrar_denuncia(request):
     )
 
 
-def editar_estado(request, denuncia_id):
-
-    denuncia = get_object_or_404(
-        Denuncia,
-        pk=denuncia_id
-    )
-
-    estados = [
-        "Pendiente",
-        "En Proceso",
-        "Resuelta"
-    ]
-
-    if request.method == "POST":
-
-        nuevo_estado = request.POST.get("estado")
-
-        if nuevo_estado in estados:
-            denuncia.estado = nuevo_estado
-            denuncia.save()
-
-            return redirect("lista_denuncias")
-
-    return render(
-        request,
-        "editar_estado.html",
-        {
-            "denuncia": denuncia,
-            "estados": estados,
-        },
-    )
-
-
 def detalle_denuncia(request, denuncia_id):
 
     denuncia = get_object_or_404(
