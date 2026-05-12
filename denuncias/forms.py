@@ -2,7 +2,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Categoria, Denuncia, Geolocalizacion, Usuario
+from ia.classificador import analizar_denuncia
+
+from .models import Categoria, ClasificacionIA, Denuncia, Geolocalizacion, Usuario
 
 
 class RegistroCiudadanoForm(UserCreationForm):
@@ -149,5 +151,14 @@ class DenunciaForm(forms.Form):
                 longitud=datos["longitud"],
                 direccion=datos.get("direccion") or "Ubicacion capturada desde el navegador",
             )
+
+        resultado_ia = analizar_denuncia(datos["titulo"], datos["descripcion"])
+        ClasificacionIA.objects.create(
+            denuncia=denuncia,
+            categoria_predicha=resultado_ia["categoria_predicha"],
+            confianza=resultado_ia["confianza"],
+            validez=resultado_ia["validez"],
+            motivo=resultado_ia["motivo"],
+        )
 
         return denuncia

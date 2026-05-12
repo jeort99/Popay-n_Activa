@@ -82,6 +82,14 @@ class SeguimientoInline(admin.TabularInline):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+class ClasificacionIAInline(admin.TabularInline):
+    model = ClasificacionIA
+    extra = 0
+    can_delete = False
+    fields = ("categoria_predicha", "confianza", "validez", "motivo", "fecha")
+    readonly_fields = ("categoria_predicha", "confianza", "validez", "motivo", "fecha")
+
+
 @admin.register(Denuncia)
 class DenunciaAdmin(admin.ModelAdmin):
     list_display = (
@@ -92,6 +100,7 @@ class DenunciaAdmin(admin.ModelAdmin):
         "estado",
         "fecha_registro",
         "ubicacion",
+        "validacion_ia",
     )
     list_filter = ("estado", "categoria", "fecha_registro")
     search_fields = (
@@ -109,7 +118,7 @@ class DenunciaAdmin(admin.ModelAdmin):
         ("Ciudadano", {"fields": ("usuario", "datos_ciudadano")}),
         ("Ubicacion", {"fields": ("enlace_mapa",)}),
     )
-    inlines = (GeolocalizacionInline, SeguimientoInline)
+    inlines = (ClasificacionIAInline, GeolocalizacionInline, SeguimientoInline)
     actions = ("marcar_pendiente", "marcar_en_proceso", "marcar_resuelta")
     date_hierarchy = "fecha_registro"
     autocomplete_fields = ("usuario", "categoria")
@@ -133,6 +142,13 @@ class DenunciaAdmin(admin.ModelAdmin):
         if hasattr(obj, "geolocalizacion"):
             return "Registrada"
         return "Sin ubicacion"
+
+    @admin.display(description="IA")
+    def validacion_ia(self, obj):
+        clasificacion = obj.clasificacionia_set.order_by("-fecha").first()
+        if not clasificacion:
+            return "Sin clasificacion"
+        return f"{clasificacion.validez} ({clasificacion.confianza:.0%})"
 
     @admin.display(description="Mapa")
     def enlace_mapa(self, obj):
@@ -183,8 +199,9 @@ class SeguimientoAdmin(admin.ModelAdmin):
 
 @admin.register(ClasificacionIA)
 class ClasificacionIAAdmin(admin.ModelAdmin):
-    list_display = ("id", "denuncia", "categoria_predicha", "confianza", "fecha")
-    search_fields = ("denuncia__titulo", "categoria_predicha")
+    list_display = ("id", "denuncia", "categoria_predicha", "confianza", "validez", "fecha")
+    list_filter = ("validez", "categoria_predicha", "fecha")
+    search_fields = ("denuncia__titulo", "categoria_predicha", "validez", "motivo")
     readonly_fields = ("fecha",)
     autocomplete_fields = ("denuncia",)
     ordering = ("-fecha",)

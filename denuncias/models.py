@@ -100,7 +100,12 @@ class ClasificacionIA(models.Model):
     denuncia = models.ForeignKey(Denuncia, on_delete=models.CASCADE, db_column='DenunciaID')
     categoria_predicha = models.CharField(db_column='CategoriaPredicha', max_length=100)
     confianza = models.FloatField(db_column='Confianza')
+    validez = models.CharField(db_column='Validez', max_length=50, default='Requiere revision')
+    motivo = models.CharField(db_column='Motivo', max_length=255, null=True, blank=True)
     fecha = models.DateTimeField(db_column='Fecha', auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.denuncia} - {self.categoria_predicha} ({self.validez})"
 
     class Meta:
         db_table = 'ClasificacionIA'

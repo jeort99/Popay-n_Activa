@@ -3,8 +3,10 @@ from pathlib import Path
 from django.test import SimpleTestCase
 from django.urls import NoReverseMatch, reverse
 
-from .admin import DenunciaAdmin, GeolocalizacionInline, SeguimientoInline
-from .models import Denuncia, ESTADOS_DENUNCIA, Seguimiento
+from ia.classificador import analizar_denuncia
+
+from .admin import ClasificacionIAInline, DenunciaAdmin, GeolocalizacionInline, SeguimientoInline
+from .models import ClasificacionIA, Denuncia, ESTADOS_DENUNCIA, Seguimiento
 
 
 class DenunciaEstadoPublicoTests(SimpleTestCase):
@@ -69,6 +71,38 @@ class AdministradorTests(SimpleTestCase):
         self.assertIn("marcar_pendiente", DenunciaAdmin.actions)
         self.assertIn("marcar_en_proceso", DenunciaAdmin.actions)
         self.assertIn("marcar_resuelta", DenunciaAdmin.actions)
+        self.assertIn(ClasificacionIAInline, DenunciaAdmin.inlines)
         self.assertIn(GeolocalizacionInline, DenunciaAdmin.inlines)
         self.assertIn(SeguimientoInline, DenunciaAdmin.inlines)
         self.assertIn("enlace_mapa", DenunciaAdmin.readonly_fields)
+
+    def test_clasificacion_ia_guarda_validez_y_motivo(self):
+        self.assertIsNotNone(ClasificacionIA._meta.get_field("validez"))
+        self.assertIsNotNone(ClasificacionIA._meta.get_field("motivo"))
+
+
+class ClasificadorIATests(SimpleTestCase):
+    def test_clasifica_denuncia_valida_por_palabras_clave(self):
+        resultado = analizar_denuncia(
+            "Hueco peligroso en la via",
+            "Hay un hueco grande en la calle principal que afecta el paso de vehiculos.",
+        )
+
+        self.assertEqual(resultado["categoria_predicha"], "Infraestructura")
+        self.assertEqual(resultado["validez"], "Valida")
+        self.assertGreaterEqual(resultado["confianza"], 0.45)
+
+    def test_marca_reporte_corto_como_posiblemente_invalido(self):
+        resultado = analizar_denuncia("Prueba", "asdf")
+
+        self.assertEqual(resultado["validez"], "Posiblemente invalida")
+
+
+class HomeCategoriasTests(SimpleTestCase):
+    templates_dir = Path(__file__).resolve().parent / "templates"
+
+    def test_home_muestra_entidad_y_descripcion_por_categoria(self):
+        template = (self.templates_dir / "home.html").read_text(encoding="utf-8")
+
+        self.assertIn("categoria.entidad", template)
+        self.assertIn("categoria.descripcion", template)

@@ -187,11 +187,21 @@
 
                 {% for categoria in categorias %}
 
-                <div class="col-6">
+                <div class="col-md-6">
 
-                    <div class="bg-white border rounded p-3 text-center fw-semibold shadow-sm">
+                    <div class="bg-white border rounded p-3 h-100 shadow-sm">
 
-                        {{ categoria }}
+                        <h3 class="h6 fw-bold mb-2">
+                            {{ categoria.nombre }}
+                        </h3>
+
+                        <p class="small text-success fw-semibold mb-2">
+                            {{ categoria.entidad }}
+                        </p>
+
+                        <p class="small text-muted mb-0">
+                            {{ categoria.descripcion }}
+                        </p>
 
                     </div>
 

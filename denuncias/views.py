@@ -6,15 +6,15 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import DenunciaForm, RegistroCiudadanoForm
-from .models import Denuncia
+from .models import Denuncia, ESTADO_EN_PROCESO, ESTADO_PENDIENTE, ESTADO_RESUELTA
 
 
 def home(request):
     stats = {
         "total": Denuncia.objects.count(),
-        "pendientes": Denuncia.objects.filter(estado="Pendiente").count(),
-        "proceso": Denuncia.objects.filter(estado="En proceso").count(),
-        "resueltas": Denuncia.objects.filter(estado="Resuelta").count(),
+        "pendientes": Denuncia.objects.filter(estado=ESTADO_PENDIENTE).count(),
+        "proceso": Denuncia.objects.filter(estado=ESTADO_EN_PROCESO).count(),
+        "resueltas": Denuncia.objects.filter(estado=ESTADO_RESUELTA).count(),
     }
 
     features = [
@@ -40,13 +40,37 @@ def home(request):
         },
     ]
 
-    categorias = [
-        "Infraestructura",
-        "Servicios Publicos",
-        "Seguridad",
-        "Medio Ambiente",
-        "Transporte",
-        "Salud",
+    categorias_servicio = [
+        {
+            "nombre": "Infraestructura",
+            "entidad": "Secretaria de Infraestructura Municipal",
+            "descripcion": "Atiende reportes sobre vias, andenes, puentes, parques, huecos y deterioro del espacio publico.",
+        },
+        {
+            "nombre": "Servicios Publicos",
+            "entidad": "Empresas prestadoras y oficina de servicios publicos",
+            "descripcion": "Gestiona fallas relacionadas con agua, energia, alumbrado, residuos y alcantarillado.",
+        },
+        {
+            "nombre": "Seguridad",
+            "entidad": "Secretaria de Gobierno, Policia Nacional y organismos de convivencia",
+            "descripcion": "Recibe alertas sobre inseguridad, vandalismo, conflictos ciudadanos y situaciones de riesgo.",
+        },
+        {
+            "nombre": "Medio Ambiente",
+            "entidad": "Autoridad ambiental y dependencia municipal de ambiente",
+            "descripcion": "Orienta casos de contaminacion, ruido, escombros, manejo de arbolado y afectaciones ambientales.",
+        },
+        {
+            "nombre": "Transporte",
+            "entidad": "Secretaria de Transito y Transporte",
+            "descripcion": "Atiende problemas de movilidad, rutas, paraderos, senalizacion vial y congestion vehicular.",
+        },
+        {
+            "nombre": "Salud",
+            "entidad": "Secretaria de Salud Municipal",
+            "descripcion": "Gestiona reportes sanitarios, plagas, riesgos de salud publica y acceso a servicios de atencion.",
+        },
     ]
 
     return render(
@@ -55,7 +79,7 @@ def home(request):
         {
             "stats": stats,
             "features": features,
-            "categorias": categorias,
+            "categorias": categorias_servicio,
         },
     )
 
