@@ -23,6 +23,21 @@ class DenunciaEstadoPublicoTests(SimpleTestCase):
         self.assertNotIn("editar-estado", template)
         self.assertNotIn("editar_estado", template)
 
+    def test_listado_publico_no_expone_datos_sensibles(self):
+        template = (self.templates_dir / "lista.html").read_text(encoding="utf-8")
+
+        self.assertNotIn("denuncia.usuario", template)
+        self.assertNotIn("geolocalizacion", template)
+        self.assertIn("Descripcion resumida", template)
+        self.assertIn("Iniciar sesion", template)
+
+    def test_detalle_requiere_inicio_de_sesion(self):
+        response = self.client.get(reverse("detalle_denuncia", args=[1]))
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/login/", response["Location"])
+        self.assertIn("next=/denuncias/1/", response["Location"])
+
     def test_detalle_no_muestra_accion_editar_estado(self):
         template = (self.templates_dir / "detalle_denuncia.html").read_text(encoding="utf-8")
 
@@ -45,6 +60,11 @@ class AutenticacionCiudadanaTests(SimpleTestCase):
         self.assertEqual(reverse("registro"), "/registro/")
         self.assertEqual(reverse("login"), "/login/")
         self.assertEqual(reverse("logout"), "/logout/")
+
+    def test_login_conserva_siguiente_url(self):
+        template = (self.templates_dir / "login.html").read_text(encoding="utf-8")
+
+        self.assertIn('name="next"', template)
 
     def test_formulario_denuncia_no_pide_datos_del_ciudadano(self):
         template = (self.templates_dir / "registrar_denuncia.html").read_text(encoding="utf-8")

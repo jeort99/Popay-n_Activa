@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from .forms import DenunciaForm, RegistroCiudadanoForm
 from .models import Denuncia, ESTADO_EN_PROCESO, ESTADO_PENDIENTE, ESTADO_RESUELTA
@@ -145,16 +146,20 @@ def registro(request):
 
 
 def iniciar_sesion(request):
+    next_url = request.POST.get("next") or request.GET.get("next") or "mis_denuncias"
+
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
 
         if form.is_valid():
             login(request, form.get_user())
+            if url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+                return redirect(next_url)
             return redirect("mis_denuncias")
     else:
         form = AuthenticationForm()
 
-    return render(request, "login.html", {"form": form})
+    return render(request, "login.html", {"form": form, "next": next_url})
 
 
 def cerrar_sesion(request):
@@ -162,6 +167,7 @@ def cerrar_sesion(request):
     return redirect("home")
 
 
+@login_required(login_url="login")
 def detalle_denuncia(request, denuncia_id):
     denuncia = get_object_or_404(Denuncia, pk=denuncia_id)
 
