@@ -87,6 +87,17 @@ class DenunciaForm(forms.Form):
             }
         ),
     )
+    imagen = forms.ImageField(
+        required=False,
+        label="Foto de la denuncia",
+        widget=forms.ClearableFileInput(
+            attrs={
+                "class": "form-control",
+                "accept": "image/*",
+                "capture": "environment",
+            }
+        ),
+    )
     latitud = forms.DecimalField(
         max_digits=9,
         decimal_places=6,
@@ -141,6 +152,7 @@ class DenunciaForm(forms.Form):
             categoria=datos["categoria"],
             titulo=datos["titulo"],
             descripcion=datos["descripcion"],
+            imagen=datos.get("imagen"),
             estado="Pendiente",
         )
 

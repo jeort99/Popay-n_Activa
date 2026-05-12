@@ -81,6 +81,14 @@ class AutenticacionCiudadanaTests(SimpleTestCase):
         self.assertIn("geo-button", template)
         self.assertIn("navigator.geolocation", template)
 
+    def test_formulario_denuncia_permite_cargar_o_tomar_foto(self):
+        template = (self.templates_dir / "registrar_denuncia.html").read_text(encoding="utf-8")
+
+        self.assertIn('enctype="multipart/form-data"', template)
+        self.assertIn("form.imagen", template)
+        self.assertIn('accept": "image/*"', Path(__file__).resolve().parent.joinpath("forms.py").read_text(encoding="utf-8"))
+        self.assertIn('capture": "environment"', Path(__file__).resolve().parent.joinpath("forms.py").read_text(encoding="utf-8"))
+
 
 class AdministradorTests(SimpleTestCase):
     def test_estados_estan_controlados_en_modelos_principales(self):
@@ -95,10 +103,16 @@ class AdministradorTests(SimpleTestCase):
         self.assertIn(GeolocalizacionInline, DenunciaAdmin.inlines)
         self.assertIn(SeguimientoInline, DenunciaAdmin.inlines)
         self.assertIn("enlace_mapa", DenunciaAdmin.readonly_fields)
+        self.assertIn("vista_previa_imagen", DenunciaAdmin.readonly_fields)
 
     def test_clasificacion_ia_guarda_validez_y_motivo(self):
         self.assertIsNotNone(ClasificacionIA._meta.get_field("validez"))
         self.assertIsNotNone(ClasificacionIA._meta.get_field("motivo"))
+
+    def test_denuncia_tiene_campo_imagen(self):
+        campo = Denuncia._meta.get_field("imagen")
+
+        self.assertEqual(campo.upload_to, "denuncias/")
 
 
 class ClasificadorIATests(SimpleTestCase):

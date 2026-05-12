@@ -100,6 +100,7 @@ class DenunciaAdmin(admin.ModelAdmin):
         "estado",
         "fecha_registro",
         "ubicacion",
+        "tiene_foto",
         "validacion_ia",
     )
     list_filter = ("estado", "categoria", "fecha_registro")
@@ -112,9 +113,10 @@ class DenunciaAdmin(admin.ModelAdmin):
     )
     ordering = ("-fecha_registro",)
     list_editable = ("estado",)
-    readonly_fields = ("fecha_registro", "datos_ciudadano", "enlace_mapa")
+    readonly_fields = ("fecha_registro", "datos_ciudadano", "vista_previa_imagen", "enlace_mapa")
     fieldsets = (
         ("Denuncia", {"fields": ("titulo", "descripcion", "categoria", "estado", "fecha_registro")}),
+        ("Evidencia fotografica", {"fields": ("imagen", "vista_previa_imagen")}),
         ("Ciudadano", {"fields": ("usuario", "datos_ciudadano")}),
         ("Ubicacion", {"fields": ("enlace_mapa",)}),
     )
@@ -142,6 +144,21 @@ class DenunciaAdmin(admin.ModelAdmin):
         if hasattr(obj, "geolocalizacion"):
             return "Registrada"
         return "Sin ubicacion"
+
+    @admin.display(description="Foto")
+    def tiene_foto(self, obj):
+        if obj.imagen:
+            return "Registrada"
+        return "Sin foto"
+
+    @admin.display(description="Vista previa")
+    def vista_previa_imagen(self, obj):
+        if not obj or not obj.imagen:
+            return "Sin foto registrada"
+        return format_html(
+            '<img src="{}" style="max-width: 360px; height: auto; border-radius: 8px;" alt="Foto de la denuncia">',
+            obj.imagen.url,
+        )
 
     @admin.display(description="IA")
     def validacion_ia(self, obj):

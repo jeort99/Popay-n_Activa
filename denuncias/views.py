@@ -120,7 +120,7 @@ def mis_denuncias(request):
 @login_required(login_url="login")
 def registrar_denuncia(request):
     if request.method == "POST":
-        form = DenunciaForm(request.POST)
+        form = DenunciaForm(request.POST, request.FILES)
 
         if form.is_valid():
             form.save(request.user)

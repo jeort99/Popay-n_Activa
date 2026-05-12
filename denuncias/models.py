@@ -48,6 +48,7 @@ class Denuncia(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.SET_NULL, null=True, db_column='CategoriaID')
     titulo = models.CharField(db_column='Titulo', max_length=200)
     descripcion = models.TextField(db_column='Descripcion')
+    imagen = models.ImageField(db_column='Imagen', upload_to='denuncias/', null=True, blank=True)
     estado = models.CharField(
         db_column='Estado',
         max_length=50,
