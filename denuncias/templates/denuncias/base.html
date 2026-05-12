@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popayán Activa</title>
+    <title>Popayan Activa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -28,6 +28,18 @@
         .status-badge {
             font-size: 0.92rem;
         }
+        .logout-form {
+            margin: 0;
+        }
+        .logout-form button {
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, .55);
+            padding: .5rem;
+        }
+        .logout-form button:hover {
+            color: rgba(255, 255, 255, .75);
+        }
         footer {
             padding: 1.5rem 0;
             color: #64748b;
@@ -37,16 +49,30 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">Popayán Activa</a>
+            <a class="navbar-brand" href="/">Popayan Activa</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link" href="/">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="/denuncias/">Denuncias</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/denuncias/nueva/">Registrar</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/denuncias/mis/">Mis denuncias</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link" href="/denuncias/nueva/">Registrar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/denuncias/mis/">Mis denuncias</a></li>
+                        {% if user.is_staff %}
+                            <li class="nav-item"><a class="nav-link" href="/admin/">Admin</a></li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <form class="logout-form" method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button type="submit">Salir</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registro</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -58,8 +84,8 @@
 
     <footer class="text-center">
         <div class="container">
-            <p class="mb-1">Popayán Activa &copy; 2026</p>
-            <small>Gestión de denuncias ciudadanas con tecnología y confianza.</small>
+            <p class="mb-1">Popayan Activa &copy; 2026</p>
+            <small>Gestion de denuncias ciudadanas con tecnologia y confianza.</small>
         </div>
     </footer>
 

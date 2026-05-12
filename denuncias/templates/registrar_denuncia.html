@@ -8,34 +8,22 @@
                 <h1 class="h3 mb-1">Registrar nueva denuncia</h1>
                 <p class="text-muted">Completa los datos para generar tu reporte y darle seguimiento.</p>
             </div>
-            <a href="/denuncias/" class="btn btn-outline-primary">Ver denuncias</a>
+            <a href="/denuncias/mis/" class="btn btn-outline-primary">Mis denuncias</a>
         </div>
 
         <form method="post" novalidate>
             {% csrf_token %}
             <div class="row g-3">
                 <div class="col-md-6">
-                    <label class="form-label" for="id_nombre">Nombre</label>
-                    {{ form.nombre }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="id_apellido">Apellido</label>
-                    {{ form.apellido }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="id_email">Correo electrónico</label>
-                    {{ form.email }}
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="id_categoria">Categoría</label>
+                    <label class="form-label" for="id_categoria">Categoria</label>
                     {{ form.categoria }}
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label" for="id_titulo">Título de la denuncia</label>
+                    <label class="form-label" for="id_titulo">Titulo de la denuncia</label>
                     {{ form.titulo }}
                 </div>
                 <div class="col-12">
-                    <label class="form-label" for="id_descripcion">Descripción</label>
+                    <label class="form-label" for="id_descripcion">Descripcion</label>
                     {{ form.descripcion }}
                 </div>
             </div>

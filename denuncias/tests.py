@@ -31,3 +31,19 @@ class DenunciaEstadoPublicoTests(SimpleTestCase):
         self.assertNotIn("Editar estado", template)
         self.assertNotIn("editar-estado", template)
         self.assertNotIn("editar_estado", template)
+
+
+class AutenticacionCiudadanaTests(SimpleTestCase):
+    templates_dir = Path(__file__).resolve().parent / "templates"
+
+    def test_rutas_de_autenticacion_estan_disponibles(self):
+        self.assertEqual(reverse("registro"), "/registro/")
+        self.assertEqual(reverse("login"), "/login/")
+        self.assertEqual(reverse("logout"), "/logout/")
+
+    def test_formulario_denuncia_no_pide_datos_del_ciudadano(self):
+        template = (self.templates_dir / "registrar_denuncia.html").read_text(encoding="utf-8")
+
+        self.assertNotIn("form.nombre", template)
+        self.assertNotIn("form.apellido", template)
+        self.assertNotIn("form.email", template)

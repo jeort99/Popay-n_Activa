@@ -1,0 +1,47 @@
+{% extends "denuncias/base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-custom p-4 shadow-sm">
+            <div class="card-body">
+                <h1 class="h3 mb-1">Crear cuenta ciudadana</h1>
+                <p class="text-muted mb-4">Registra tu cuenta para reportar y consultar tus denuncias.</p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label" for="id_first_name">Nombre</label>
+                            {{ form.first_name }}
+                            {{ form.first_name.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="id_last_name">Apellido</label>
+                            {{ form.last_name }}
+                            {{ form.last_name.errors }}
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="id_email">Correo electronico</label>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="id_password1">Contrasena</label>
+                            {{ form.password1 }}
+                            {{ form.password1.errors }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label" for="id_password2">Confirmar contrasena</label>
+                            {{ form.password2 }}
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Crear cuenta</button>
+                    <a href="{% url 'login' %}" class="btn btn-link mt-4">Ya tengo cuenta</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
