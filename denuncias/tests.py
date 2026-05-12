@@ -47,3 +47,11 @@ class AutenticacionCiudadanaTests(SimpleTestCase):
         self.assertNotIn("form.nombre", template)
         self.assertNotIn("form.apellido", template)
         self.assertNotIn("form.email", template)
+
+    def test_formulario_denuncia_incluye_geolocalizacion(self):
+        template = (self.templates_dir / "registrar_denuncia.html").read_text(encoding="utf-8")
+
+        self.assertIn("form.latitud", template)
+        self.assertIn("form.longitud", template)
+        self.assertIn("geo-button", template)
+        self.assertIn("navigator.geolocation", template)

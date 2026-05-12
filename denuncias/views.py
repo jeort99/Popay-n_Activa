@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -140,9 +142,18 @@ def detalle_denuncia(request, denuncia_id):
     denuncia = get_object_or_404(Denuncia, pk=denuncia_id)
 
     geolocalizacion = None
+    mapa_url = None
 
     try:
         geolocalizacion = denuncia.geolocalizacion
+        margen = Decimal("0.004")
+        latitud = geolocalizacion.latitud
+        longitud = geolocalizacion.longitud
+        mapa_url = (
+            "https://www.openstreetmap.org/export/embed.html"
+            f"?bbox={longitud - margen},{latitud - margen},{longitud + margen},{latitud + margen}"
+            f"&layer=mapnik&marker={latitud},{longitud}"
+        )
     except Exception:
         geolocalizacion = None
 
@@ -154,6 +165,7 @@ def detalle_denuncia(request, denuncia_id):
         {
             "denuncia": denuncia,
             "geolocalizacion": geolocalizacion,
+            "mapa_url": mapa_url,
             "seguimientos": seguimientos,
         },
     )

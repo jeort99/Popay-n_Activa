@@ -6,7 +6,7 @@
         <div class="d-flex justify-content-between align-items-start mb-4">
             <div>
                 <h1 class="h3 mb-1">Detalle de la denuncia</h1>
-                <p class="text-muted">Información completa, geolocalización y seguimiento del caso.</p>
+                <p class="text-muted">Informacion completa, geolocalizacion y seguimiento del caso.</p>
             </div>
             <div class="btn-group">
                 <a href="{% url 'lista_denuncias' %}" class="btn btn-outline-secondary">Volver</a>
@@ -18,7 +18,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title">{{ denuncia.titulo }}</h5>
-                        <p class="text-muted mb-2">Reportado por: {{ denuncia.usuario.nombre }} {{ denuncia.usuario.apellido }} — {{ denuncia.usuario.email }}</p>
+                        <p class="text-muted mb-2">Reportado por: {{ denuncia.usuario.nombre }} {{ denuncia.usuario.apellido }} - {{ denuncia.usuario.email }}</p>
                         <p>{{ denuncia.descripcion }}</p>
                         <div class="mt-3">
                             <span class="badge {% if denuncia.estado == 'Pendiente' %}bg-warning text-dark{% elif denuncia.estado == 'Resuelta' %}bg-success{% else %}bg-secondary{% endif %} status-badge">{{ denuncia.estado }}</span>
@@ -52,24 +52,27 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title">Datos de la categoría</h5>
+                        <h5 class="card-title">Datos de la categoria</h5>
                         {% if denuncia.categoria %}
                             <p class="mb-1"><strong>{{ denuncia.categoria.nombre }}</strong></p>
                             <p class="text-muted">{{ denuncia.categoria.descripcion }}</p>
                         {% else %}
-                            <p class="text-muted mb-0">No se asignó categoría.</p>
+                            <p class="text-muted mb-0">No se asigno categoria.</p>
                         {% endif %}
                     </div>
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Geolocalización</h5>
+                        <h5 class="card-title">Geolocalizacion</h5>
                         {% if geolocalizacion %}
-                            <p class="mb-1"><strong>Dirección:</strong> {{ geolocalizacion.direccion }}</p>
+                            <p class="mb-1"><strong>Direccion:</strong> {{ geolocalizacion.direccion }}</p>
                             <p class="mb-1"><strong>Latitud:</strong> {{ geolocalizacion.latitud }}</p>
-                            <p class="mb-0"><strong>Longitud:</strong> {{ geolocalizacion.longitud }}</p>
+                            <p class="mb-3"><strong>Longitud:</strong> {{ geolocalizacion.longitud }}</p>
+                            <div class="ratio ratio-4x3 rounded overflow-hidden border">
+                                <iframe title="Mapa de la denuncia" loading="lazy" src="{{ mapa_url }}"></iframe>
+                            </div>
                         {% else %}
-                            <p class="text-muted mb-0">No hay datos de geolocalización registrados.</p>
+                            <p class="text-muted mb-0">No hay datos de geolocalizacion registrados.</p>
                         {% endif %}
                     </div>
                 </div>
